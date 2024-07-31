@@ -2,7 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1' }),
+  baseQuery: fetchBaseQuery({
+    // baseUrl: 'https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1',
+    baseUrl: '/api', // Используем путь, который настроен в прокси
+    prepareHeaders: (headers) => {
+      headers.set('Authorization', 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn');
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getContacts: builder.query({
       query: () => ({

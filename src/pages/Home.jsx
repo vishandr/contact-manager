@@ -4,18 +4,26 @@ function Home() {
   const { data, error, isLoading } = useGetContactsQuery();
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading contacts</p>;
+  if (error) return <p>Error loading contacts: {error.message}</p>;
+
+  // const contacts = data.resources;
+  console.log(data);
+  const contacts = data?.resources || [];
+
+  if (contacts.length === 0) {
+    return <div>No contacts available</div>;
+  }
+
 
   return (
     <div>
-      <h1>Contacts</h1>
+      <h1>List of contacts</h1>
       <ul>
-        {data.map((contact) => (
+        {contacts.map((contact) => (
           <li key={contact.id}>
-            <img src={contact.avatar} alt={`${contact.first_name} ${contact.last_name}`} />
-            <p>{contact.first_name} {contact.last_name}</p>
-            <p>{contact.email}</p>
-            <p>{contact.tags.join(', ')}</p>
+            <img src={contact.avatar_url} alt={`${contact.fields['first name'][0]?.value} ${contact.fields['last name'][0]?.value}`} />
+            <p>{contact.fields['first name'][0]?.value} {contact.fields['last name'][0]?.value}</p>
+            <p>{contact.fields.email[0]?.value}</p>
           </li>
         ))}
       </ul>
