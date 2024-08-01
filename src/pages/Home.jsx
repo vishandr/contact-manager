@@ -1,4 +1,5 @@
 import { useGetContactsQuery } from '../services/contacts';
+import Contact from '../components/ContactCard';
 
 function Home() {
   const { data, error, isLoading } = useGetContactsQuery();
@@ -6,8 +7,7 @@ function Home() {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading contacts: {error.message}</p>;
 
-  // const contacts = data.resources;
-  console.log(data);
+  // console.log(data);
   const contacts = data?.resources || [];
 
   if (contacts.length === 0) {
@@ -17,16 +17,10 @@ function Home() {
 
   return (
     <div>
-      <h1>List of contacts</h1>
-      <ul>
+      <h1 className="font-poppins">Contacts</h1>
         {contacts.map((contact) => (
-          <li key={contact.id}>
-            <img src={contact.avatar_url} alt={`${contact.fields['first name'][0]?.value} ${contact.fields['last name'][0]?.value}`} />
-            <p>{contact.fields['first name'][0]?.value} {contact.fields['last name'][0]?.value}</p>
-            <p>{contact.fields.email[0]?.value}</p>
-          </li>
+          <Contact key={contact.id} contact={contact} />
         ))}
-      </ul>
     </div>
   );
 }
