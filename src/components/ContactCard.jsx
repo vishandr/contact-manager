@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import CircleXIcon from '../assets/circle-x.svg';
 
 const ContactCard = ({ contact }) => {
