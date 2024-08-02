@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useCreateContactMutation } from '../services/contacts';
 
-const CreateContactForm = () => {
+// eslint-disable-next-line react/prop-types
+const CreateContactForm = ({ onContactAdded }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,10 +20,11 @@ const CreateContactForm = () => {
     };
     try {
       await addContact(newContact).unwrap();
+      onContactAdded(); // Call the function to refresh the contact list
       setFirstName('');
       setLastName('');
       setEmail('');
-      alert('Contact added successfully!');
+      // alert('Contact added successfully!');
     } catch (err) {
       console.error('Failed to add contact:', err);
     }

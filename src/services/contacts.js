@@ -5,8 +5,7 @@ const apiKey = 'VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn';
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
-    // baseUrl: 'https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1',
-    baseUrl: '/api', // Используем путь, который настроен в прокси
+    baseUrl: '/api', 
     prepareHeaders: (headers) => {
       headers.set('Authorization', `Bearer ${apiKey}`);
       return headers;

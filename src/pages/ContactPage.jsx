@@ -25,8 +25,15 @@ const ContactPage = () => {
 
   const handleAddTags = async () => {
     if (tags) {
-      await addTags({ id, tags: tags.split(',').map(tag => tag.trim()) });
-      setTags('');
+      const tagArray = tags.split(',').map(tag => tag.trim());
+       // Логирование URL перед отправкой запроса
+      console.log('Sending request to add tags with data:', { id, tags: tagArray });
+      try{
+        await addTags({ id, tags: tagArray }).unwrap();
+        setTags('');
+      } catch (error) {
+        console.error('Error adding tags:', error);
+      }
     }
   };
 
