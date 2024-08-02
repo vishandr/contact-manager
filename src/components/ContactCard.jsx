@@ -1,16 +1,19 @@
 /* eslint-disable react/prop-types */
 import CircleXIcon from '../assets/circle-x.svg';
+import { Link } from 'react-router-dom';
 
 const ContactCard = ({ contact }) => {
-  const firstName = contact.fields['first name'][0]?.value || '';
-  const lastName = contact.fields['last name'][0]?.value || '';
-  const email = contact.fields.email[0]?.value || '';
+  const firstName = contact.fields['first name']?.[0]?.value || '';
+  const lastName = contact.fields['last name']?.[0]?.value || '';
+  const email = contact.fields.email?.[0]?.value || '';
   const avatarUrl = contact.avatar_url || '';
   const tags = contact.tags || [];
+  const id = contact.id;
 
   return (
     <>
-    <div className=" m-2 relative contact-card border border-gray-200 bg-gray-100 rounded-lg p-4 shadow-md flex flex-row items-start hover:bg-gray-200 hover:cursor-pointer">
+    <li className=" m-2 relative contact-card border border-gray-200 bg-gray-100 rounded-lg p-4 shadow-md flex flex-row items-start hover:bg-gray-200 hover:cursor-pointer">
+    <Link to={`/contact/${id}`} className="flex items-center">
       <div className='p-4'>
       <img
           src={avatarUrl}
@@ -42,7 +45,8 @@ const ContactCard = ({ contact }) => {
           <img src={CircleXIcon} alt="Delete" className="w-6 h-6" />
         </button>
       </div>
-    </div>    
+      </Link>
+    </li>    
     </>
   );
 };

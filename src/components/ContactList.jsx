@@ -1,4 +1,4 @@
-import { useGetContactsQuery } from '../features/contacts/contactsSlice';
+import { useGetContactsQuery } from '../services/contacts';
 import ContactCard from './ContactCard';
 
 const ContactList = () => {
