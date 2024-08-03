@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import CircleXIcon from '../assets/circle-x.svg';
 import { Link } from 'react-router-dom';
+import { useDeleteContactMutation } from '../services/contacts';
 
-const ContactCard = ({ contact }) => {
+const ContactCard = ({ contact, refetch }) => {
   const firstName = contact.fields['first name']?.[0]?.value || '';
   const lastName = contact.fields['last name']?.[0]?.value || '';
   const email = contact.fields.email?.[0]?.value || '';
@@ -10,10 +11,33 @@ const ContactCard = ({ contact }) => {
   const tags = contact.tags || [];
   const id = contact.id;
 
+  const [deleteContact] = useDeleteContactMutation();
+
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete ${firstName} ${lastName}?`)) {
+      try {
+        await deleteContact(id).unwrap();
+        refetch();
+        alert('Contact deleted successfully');
+      } catch (err) {
+        console.error('Failed to delete contact:', err);
+        alert('Failed to delete contact');
+      }
+    }
+  };
+
   return (
     <>
     <li className=" m-2 relative contact-card border border-gray-200 bg-gray-100 rounded-lg p-4 shadow-md flex flex-row items-start hover:bg-gray-200 hover:cursor-pointer">
-    <Link to={`/contact/${id}`} className="flex items-center">
+    <div>
+        <button
+          className="absolute top-2 right-2 bg-gray-100 text-white p-1 rounded-full hover:bg-gray-200"
+          onClick={handleDelete}
+        >
+          <img src={CircleXIcon} alt="Delete" className="w-6 h-6" />
+        </button>
+      </div>
+    <Link to={`/contact/${id}`} className="flex items-center w-full">
       <div className='p-4'>
       <img
           src={avatarUrl}
@@ -37,14 +61,7 @@ const ContactCard = ({ contact }) => {
         </div>
         
       </div>
-      <div>
-        <button
-          className="absolute top-2 right-2 bg-gray-100 text-white p-1 rounded-full hover:bg-gray-200"
-          // onClick={handleDelete}
-        >
-          <img src={CircleXIcon} alt="Delete" className="w-6 h-6" />
-        </button>
-      </div>
+      
       </Link>
     </li>    
     </>

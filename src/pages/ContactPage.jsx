@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetContactByIdQuery, useAddTagsMutation } from '../services/contacts';
+import { useGetContactByIdQuery } from '../services/contacts';
+import AddTagsForm from '../components/AddTagsForm';
 
 const ContactPage = () => {
   const { id } = useParams();
-  const { data, error, isLoading } = useGetContactByIdQuery(id);
-  const [tags, setTags] = useState('');
-  const [addTags] = useAddTagsMutation();
+  const { data, error, isLoading, refetch } = useGetContactByIdQuery(id);
   const contact = data?.resources?.[0] || [];
   
   if (isLoading) {
@@ -23,18 +21,8 @@ const ContactPage = () => {
   const avatar_url = contact.avatar_url || '';
   const usertags = contact.tags || [];
 
-  const handleAddTags = async () => {
-    if (tags) {
-      const tagArray = tags.split(',').map(tag => tag.trim());
-       // Логирование URL перед отправкой запроса
-      console.log('Sending request to add tags with data:', { id, tags: tagArray });
-      try{
-        await addTags({ id, tags: tagArray }).unwrap();
-        setTags('');
-      } catch (error) {
-        console.error('Error adding tags:', error);
-      }
-    }
+  const handleTagsAdded = () => {
+    refetch();
   };
 
   return (
@@ -50,29 +38,18 @@ const ContactPage = () => {
           </div>
         </div>
         <div className="mt-4">
-          <h3 className="font-poppins text-md font-medium">Tags</h3>
+        <h3 className="font-poppins text-md font-medium">Tags</h3>
           <div className="flex flex-wrap">
-            {usertags.map(tag => (
-              <span key={tag.id} className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full mr-2 mb-2">
-                {typeof tag === 'string' ? tag : tag.tag}
-              </span>
-            ))}
+            {usertags.length > 0 ? (
+              usertags.map(tag => (
+                <span key={tag.id || tag} className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full mr-2 mb-2">
+                  {typeof tag === 'string' ? tag : tag.tag}
+                </span>
+              ))
+            ) : ''}
           </div>
           <div className="mt-4">
-            <label htmlFor="newTag" className="block text-gray-700">Add New Tag</label>
-            <input
-              type="text"
-              id="newTag"
-              value={tags}
-              onChange={e => setTags(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
-            />
-            <button
-              onClick={handleAddTags}
-              className="w-full mt-2 py-2 border border-gray-500 text-gray-500 rounded-md hover:bg-gray-100"
-            >
-              Add New Tag
-            </button>
+            <AddTagsForm contactId={id} onTagsAdded={handleTagsAdded} />
           </div>
         </div>
       </div>

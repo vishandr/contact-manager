@@ -2,7 +2,7 @@ import { useGetContactsQuery } from '../services/contacts';
 import ContactCard from './ContactCard';
 
 const ContactList = () => {
-  const { data, error, isLoading } = useGetContactsQuery();
+  const { data, error, isLoading, refetch } = useGetContactsQuery();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,7 +24,7 @@ const ContactList = () => {
       <h1 className="font-poppins">Contacts</h1>
       <ul>
         {contacts.map(contact => (
-          <ContactCard key={contact.id} contact={contact} />
+          <ContactCard key={contact.id} contact={contact} refetch={refetch} />
         ))}
       </ul>
     </>
