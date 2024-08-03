@@ -42,10 +42,11 @@ const EditField = ({ value, onSave, placeholder, isAvatar = false }) => {
             <span>{value || placeholder}</span>
           )}
           <button
-            className="absolute top-0 right-0 mt-2 mr-2 p-2 bg-gray-100 rounded-full hover:bg-gray-200 invisible group-hover:visible"
+            className="absolute top-0 right-0 p-2 hover:bg-gray-400  text-neutral-100 rounded-full invisible group-hover:visible"
+            // className="ml-2 p-1 bg-gray-50 text-black rounded"
             onClick={() => setIsEditing(true)}
           >
-            <img src={EditIcon} alt="Edit" className="w-4 h-4" />
+            <img src={EditIcon} alt="Edit" className="w-4 h-4 text-blue-500" />
           </button>
         </div>
       )}
