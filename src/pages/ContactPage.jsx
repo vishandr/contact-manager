@@ -5,6 +5,7 @@ import AddTagsForm from '../components/AddTagsForm';
 const ContactPage = () => {
   const { id } = useParams();
   const { data, error, isLoading, refetch } = useGetContactByIdQuery(id);
+  // const [assignTags] = useAssignTagsMutation();
   const contact = data?.resources?.[0] || [];
   
   if (isLoading) {
@@ -19,7 +20,8 @@ const ContactPage = () => {
   const lastName = contact.fields?.['last name']?.[0]?.value || '';
   const email = contact.fields?.email?.[0]?.value || '';
   const avatar_url = contact.avatar_url || '';
-  const usertags = contact.tags || [];
+  // const usertags = contact.tags || [];
+  const usertags = contact.tags?.map(tag => tag.tag) || [];
 
   const handleTagsAdded = () => {
     refetch();
@@ -49,7 +51,7 @@ const ContactPage = () => {
             ) : ''}
           </div>
           <div className="mt-4">
-            <AddTagsForm contactId={id} onTagsAdded={handleTagsAdded} />
+            <AddTagsForm contactId={id} existingTags={usertags} onTagsAdded={handleTagsAdded} />
           </div>
         </div>
       </div>
