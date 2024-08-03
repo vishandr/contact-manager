@@ -19,12 +19,10 @@ const ContactPage = () => {
   
   const handleUpdateField = async (fieldName, newValue) => {
     try {
-      // Собираем обновленные поля, сохраняя старые значения
       const updatedFields = {
         ...contact.fields, 
         [fieldName]: [{ label: fieldName, value: newValue }]
       };
-
 
       const updatedContact = {
         avatar_url: contact.avatar_url,
@@ -36,8 +34,24 @@ const ContactPage = () => {
 
       await updateContact({ id, ...updatedContact }).unwrap();
       refetch();
+      alert('Field updated successfully!');
     } catch (err) {
       console.error('Failed to update field:', err);
+    }
+  };
+
+  const handleUpdateAvatar = async (newUrl) => {
+    try {
+      const updatedContact = {
+        avatar_url: newUrl,
+        fields: contact.fields,
+        is_important: contact.is_important,
+      };
+      await updateContact({ id, ...updatedContact }).unwrap();
+      refetch();
+      alert('Avatar updated successfully!');
+    } catch (err) {
+      console.error('Failed to update avatar:', err);
     }
   };
 
@@ -55,15 +69,20 @@ const ContactPage = () => {
     <div className="flex justify-center items-start pt-10 h-screen">
       <div className="w-1/2 p-4 bg-white shadow-md rounded-lg">
         <div className="flex items-center">
-          <img src={avatar_url} alt="avatar" className="w-16 h-16 rounded-full mr-4" />
-          <div>
+          <EditField
+            value={avatar_url}
+            onSave={handleUpdateAvatar}
+            isAvatar={true}
+            placeholder="Enter avatar URL"
+          />
+          <div className="ml-4">
             {/* <div className="font-poppins text-lg font-medium">
               {firstName} {lastName}
             </div>
             <div>{email}</div> */}
-            <EditField value={firstName} onSave={(newValue) => handleUpdateField('first name', newValue)} />
-            <EditField value={lastName} onSave={(newValue) => handleUpdateField('last name', newValue)} />
-            <EditField value={email} onSave={(newValue) => handleUpdateField('email', newValue)} />
+            <EditField placeholder="First Name" value={firstName} onSave={(newValue) => handleUpdateField('first name', newValue)} />
+            <EditField placeholder="Last Name" value={lastName} onSave={(newValue) => handleUpdateField('last name', newValue)} />
+            <EditField placeholder="email" value={email} onSave={(newValue) => handleUpdateField('email', newValue)} />
           </div>
         </div>
         <div className="mt-4">
