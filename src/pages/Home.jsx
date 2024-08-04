@@ -10,11 +10,11 @@ function Home() {
   };
 
   return (
-      <div className="flex">
-        <div className="w-1/3 sticky top-0 h-screen p-4">
+      <div className="flex flex-col md:flex-row px-4 text-base md:text-sm">
+        <div className="w-full md:w-1/4 md:sticky top-0 md:h-screen p-4">
           <CreateContactForm onContactAdded={handleContactAdded}/>
         </div>
-        <div className="w-2/3 p-4">
+        <div className="w-full md:w-2/3 p-4">
           <ContactList />
         </div>
       </div>
