@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const apiKey = 'VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn';
+const apiBaseUrl = 'https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1'; // Абсолютный URL с прокси
 
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api', 
+    baseUrl: apiBaseUrl, 
     prepareHeaders: (headers) => {
       headers.set('Authorization', `Bearer ${apiKey}`);
       return headers;
